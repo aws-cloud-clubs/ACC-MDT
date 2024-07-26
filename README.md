@@ -1,5 +1,5 @@
 
-##2024 ACC 해커톤 마돈탕팀 : 파일공유 시스템
+## 2024 ACC 해커톤 마돈탕팀 : 파일공유 시스템
 
 ### 🧑‍🤝‍🧑팀원
 | [김효준(팀장)](https://github.com/Khyojun)|[김채연](https://github.com/Yeon-chae)|[김수진](https://github.com/cowboysj)|[부준혁](https://github.com/)|[정지환](https://github.com/)|[조정원](https://github.com/)|
