@@ -40,3 +40,5 @@
 4. pull request를 develop branch로 merge 
 6. 이전에 merge된 작업이 있을 경우 다른 branch에서 진행하던 작업에 merge된 작업을 pull하기
 7. 종료된 issue와 pull request의 label을 관리
+
+## 📂패키지 구조 
