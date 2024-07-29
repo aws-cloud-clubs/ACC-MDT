@@ -36,6 +36,7 @@ public class AwsConfig {
             withSaveBehavior(DynamoDBMapperConfig.SaveBehavior.CLOBBER) // update 시 덮어쓰기
             .withConsistentReads(DynamoDBMapperConfig.ConsistentReads.CONSISTENT) // 강력한 일관성 적용
             .withTableNameOverride(null) // 테이블 이름 재정의 x
+            .withPaginationLoadingStrategy(DynamoDBMapperConfig.PaginationLoadingStrategy.EAGER_LOADING) //  페이지네이션을 통해서 가져오기보다 모든 내용을 다 가져오는 방식
             .build();
 
         return new DynamoDBMapper(dynamoDBClient(), builder);
