@@ -31,8 +31,8 @@ public class DynamoDbFileInfoRepository implements FileInfoRepository {
 
             DynamoDBScanExpression expression = DynamoDbExpressionProvider.
                 provideFilterScanExpression(
-                "filePath", filePath,
-                "contains(filePath, :filePath)");
+                ":file_path", filePath,
+                "contains(file_path, :file_path)");
 
             PaginatedScanList<FileInfo> scan = mapper.scan(FileInfo.class,
                 expression);
