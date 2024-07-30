@@ -32,6 +32,7 @@ public class FileService {
     );
 
     return FileUploadResponseDto.builder()
+        .message("파일 업로드 Url 발급 성공")
         .presignedUrl(amazonS3.generatePresignedUrl(generatePresignedUrlRequest).toString())
         .build();
   }

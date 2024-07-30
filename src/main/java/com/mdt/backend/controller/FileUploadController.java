@@ -28,7 +28,6 @@ public class FileUploadController {
       @RequestBody(required = false) FileUploadRequestDto fileUploadRequestDto) {
     FileUploadResponseDto fileUploadResponseDto = fileService.getPresignedUrlToUpload(
         fileUploadRequestDto.getUserId(), fileUploadRequestDto.getFileName());
-    log.info(fileUploadResponseDto.getPresignedUrl());
     return ResponseEntity.ok(fileUploadResponseDto);
   }
 }

@@ -9,5 +9,6 @@ import lombok.Getter;
 @Schema(description = "AWS S3 업로드용 PresignedUrl 응답")
 public class FileUploadResponseDto {
 
+  private String message;
   private String presignedUrl;
 }
