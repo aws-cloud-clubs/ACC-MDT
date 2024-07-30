@@ -7,7 +7,6 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class FileSearchResponseDto {
-    private int status;
     private String message;
     private List<String> fileNames;
 }

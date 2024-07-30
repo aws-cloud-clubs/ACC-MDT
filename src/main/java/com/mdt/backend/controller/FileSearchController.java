@@ -27,9 +27,9 @@ public class FileSearchController {
         + "파일 경로에 대한 입력을 하였을 경우 유사한 파일 경로에 대한 결과물을 제공합니다.")
     @Parameter(name = "filePath", description = "파일 경로에 관한 정보를 입력. 입력하지 않으면 전체 파일 경로를 반환")
     @GetMapping("/search")
-    public FileSearchResponseDto searchFiles(@RequestBody(required = false) FileSearchRequestDto fileSearchRequestDto) {
+    public ResponseEntity<FileSearchResponseDto> searchFiles(@RequestBody(required = false) FileSearchRequestDto fileSearchRequestDto) {
         List<String> searchedFiles = dbService.searchFiles(fileSearchRequestDto);
-        return new FileSearchResponseDto(200, "파일 검색 성공", searchedFiles);
+        return ResponseEntity.ok(new FileSearchResponseDto("파일 검색 성공", searchedFiles));
     }
 
 
