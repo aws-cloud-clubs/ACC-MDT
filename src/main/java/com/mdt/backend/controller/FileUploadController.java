@@ -2,7 +2,7 @@ package com.mdt.backend.controller;
 
 import com.mdt.backend.dto.FileUploadRequestDto;
 import com.mdt.backend.dto.FileUploadResponseDto;
-import com.mdt.backend.service.FileService;
+import com.mdt.backend.service.S3Service;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -20,13 +20,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1")
 public class FileUploadController {
 
-  private final FileService fileService;
+  private final S3Service s3Service;
 
   @Operation(summary = "파일 업로드", description = "Upload용 Presigned URL 생성")
   @PostMapping("/file/upload")
   public ResponseEntity<FileUploadResponseDto> getPresignedUrlToUpload(
       @RequestBody(required = false) FileUploadRequestDto fileUploadRequestDto) {
-    FileUploadResponseDto fileUploadResponseDto = fileService.getPresignedUrlToUpload(
+    FileUploadResponseDto fileUploadResponseDto = s3Service.getPresignedUrlToUpload(
         fileUploadRequestDto.getUserId(), fileUploadRequestDto.getFileName());
     return ResponseEntity.ok(fileUploadResponseDto);
   }
