@@ -13,7 +13,6 @@ def lambda_handler(event, context):
         bucket_name = record['s3']['bucket']['name']
         object_key = unquote_plus(record['s3']['object']['key'])
         
-        # object_key에서 file_name과 user_id 추출
         file_name, user_id = object_key.split('/', 1)
         
         try:
@@ -24,7 +23,6 @@ def lambda_handler(event, context):
             last_modified = response['LastModified']
             created_at = last_modified.isoformat()
 
-            # DynamoDB 항목 삽입 또는 업데이트
             try:
                 table.update_item(
                     Key={
@@ -35,7 +33,7 @@ def lambda_handler(event, context):
                     ExpressionAttributeValues={
                         ':created_at': created_at,
                         ':content_length': content_length,
-                        ':file_size': content_length,  # Assuming file_size is the same as content_length
+                        ':file_size': content_length,  
                         ':file_type': content_type
                     },
                     ConditionExpression="attribute_exists(file_name) AND attribute_exists(user_id)",
@@ -50,7 +48,7 @@ def lambda_handler(event, context):
                             'user_id': user_id,
                             'created_at': created_at,
                             'file_content_length': content_length,
-                            'file_size': content_length,  # Assuming file_size is the same as content_length
+                            'file_size': content_length,  
                             'file_type': content_type
                         }
                     )
