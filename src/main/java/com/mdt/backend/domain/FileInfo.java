@@ -18,8 +18,11 @@ import lombok.Setter;
 @Builder
 public class FileInfo {
 
-    @DynamoDBHashKey(attributeName = "file_path")
-    private String filePath;
+    @DynamoDBHashKey(attributeName = "file_name")
+    private String fileName;
+
+    @DynamoDBRangeKey(attributeName = "user_id")
+    private String userId;
 
     @DynamoDBAttribute(attributeName = "file_size")
     private int fileSize;
@@ -30,7 +33,6 @@ public class FileInfo {
     @DynamoDBAttribute(attributeName = "file_content_length")
     private int fileContentLength;
 
-    @DynamoDBRangeKey
     @DynamoDBAttribute(attributeName = "created_at")
     private String createdAt;
 

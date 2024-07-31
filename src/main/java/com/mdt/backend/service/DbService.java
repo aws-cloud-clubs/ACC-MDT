@@ -7,6 +7,5 @@ public interface DbService {
 
     List<String> searchFiles(FileSearchRequestDto filePath);
 
-    void uploadFile(String filePath);
 
 }
