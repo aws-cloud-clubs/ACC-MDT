@@ -1,8 +1,8 @@
 package com.mdt.backend.controller;
 
 
-import com.mdt.backend.dto.FileDownloadRequestDto;
-import com.mdt.backend.dto.FileDownloadResponseDto;
+import com.mdt.backend.dto.FileGetRequestDto;
+import com.mdt.backend.dto.FileGetResponseDto;
 import com.mdt.backend.service.S3Service;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -12,19 +12,19 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "DOWNLOAD_API", description = "파일을 다운로드할 수 있는 presignedURL을 반환하는 API")
+@Tag(name = "GET_API", description = "파일을 조회할 수 있는 presignedURL을 반환하는 API")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1")
-public class FileDownloadController {
+public class FileGetController {
 
     private final S3Service s3Service;
 
-    @Operation(summary = "파일 다운로드", description = "파일 경로를 받아 s3에서 생성한 presignedUrl을 반환합니다.")
-    @PostMapping("/download")
-    public FileDownloadResponseDto generatePresignedUrl(@RequestBody FileDownloadRequestDto request) {
+    @Operation(summary = "파일 조회", description = "파일 경로를 받아 s3에서 생성한 presignedUrl을 반환합니다.")
+    @PostMapping("/get")
+    public FileGetResponseDto generatePresignedUrl(@RequestBody FileGetRequestDto request) {
         String presignedUrl = s3Service.generatePresignedUrl(request.getFilePath());
-        return new FileDownloadResponseDto("Presigned URL 생성 성공", presignedUrl);
+        return new FileGetResponseDto("Presigned URL 생성 성공", presignedUrl);
     }
 
 }
