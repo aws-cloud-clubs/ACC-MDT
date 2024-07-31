@@ -73,6 +73,10 @@ public class S3Service {
                 "attachment; filename=\"" + encodedFileName + "\"");
       }
 
+      // 파일이 UTF-8로 인코딩된 텍스트 파일임을 명시
+      generatePresignedUrlRequest.addRequestParameter("response-content-type", "text/plain; charset=UTF-8");
+
+
       return amazonS3.generatePresignedUrl(generatePresignedUrlRequest).toString();
     } catch (AmazonS3Exception e) {
       if (e.getStatusCode() == 404) {
