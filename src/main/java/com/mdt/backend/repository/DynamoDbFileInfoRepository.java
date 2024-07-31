@@ -2,7 +2,9 @@ package com.mdt.backend.repository;
 
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
+import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedQueryList;
 import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedScanList;
 import com.mdt.backend.domain.FileInfo;
 import com.mdt.backend.exception.FileSearchException;
@@ -25,19 +27,36 @@ public class DynamoDbFileInfoRepository implements FileInfoRepository {
     }
 
     @Override
-    public List<FileInfo> findByFilePath(String filePath) {
+    public List<FileInfo> findByScanFilePath(String fileName) {
         try {
             DynamoDBMapper mapper = new DynamoDBMapper(client);
 
             DynamoDBScanExpression expression = DynamoDbExpressionProvider.
                 provideFilterScanExpression(
-                ":file_path", filePath,
-                "contains(file_path, :file_path)");
+                ":file_name", fileName,
+                "file_name = :file_name");
 
             PaginatedScanList<FileInfo> scan = mapper.scan(FileInfo.class,
                 expression);
 
             return scan.stream().toList();
+        } catch (RuntimeException e) {
+            log.error("error : {}", e.getMessage());
+            throw new FileSearchException();
+        }
+    }
+
+    @Override
+    public List<FileInfo> findByQueryFilePath(String fileName) {
+        try {
+            DynamoDBMapper mapper = new DynamoDBMapper(client);
+
+            DynamoDBQueryExpression<FileInfo> expr = DynamoDbExpressionProvider.
+                provideQueryExpression(fileName);
+
+            PaginatedQueryList<FileInfo> query = mapper.query(FileInfo.class, expr);
+
+            return query.stream().toList();
         } catch (RuntimeException e) {
             log.error("error : {}", e.getMessage());
             throw new FileSearchException();

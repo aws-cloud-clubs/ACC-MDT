@@ -8,7 +8,11 @@ public interface FileInfoRepository {
 
     void save(FileInfo fileInfo);
 
-    List<FileInfo> findByFilePath(String filePath);
+    List<FileInfo> findByScanFilePath(String fileName);
+
+
+    List<FileInfo> findByQueryFilePath(String fileName);
+
 
     void deleteByFilePath(String filePath);
 
