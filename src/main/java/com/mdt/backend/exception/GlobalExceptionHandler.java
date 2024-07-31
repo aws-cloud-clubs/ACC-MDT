@@ -10,8 +10,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(FileSearchException.class)
     public ResponseEntity<String> handleNotFoundFilePathException() {
-        return ResponseEntity.status(500).body("파일 검색중 오류가 발생하였습니다!");
+        return ResponseEntity.status(500).body("파일 검색 중 오류가 발생하였습니다!");
     }
 
+    @ExceptionHandler(FileDownloadException.class)
+    public ResponseEntity<String> handleFileDownloadException() {
+        return ResponseEntity.status(500).body("파일 다운로드 중 오류가 발생하였습니다!");
+    }
 
 }
