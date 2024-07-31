@@ -20,10 +20,10 @@ public class FileGetController {
 
     private final S3Service s3Service;
 
-    @Operation(summary = "파일 조회", description = "파일 경로를 받아 s3에서 생성한 presignedUrl을 반환합니다.")
+    @Operation(summary = "파일 조회", description = "파일 경로를 받아 s3에서 생성한 조회용 presignedUrl을 반환합니다.")
     @PostMapping("/get")
     public FileGetResponseDto generatePresignedUrl(@RequestBody FileGetRequestDto request) {
-        String presignedUrl = s3Service.generatePresignedUrl(request.getFilePath());
+        String presignedUrl = s3Service.generatePresignedUrl(request.getFilePath(), false);
         return new FileGetResponseDto("Presigned URL 생성 성공", presignedUrl);
     }
 

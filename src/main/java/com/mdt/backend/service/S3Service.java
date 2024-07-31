@@ -8,6 +8,8 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.mdt.backend.dto.FileUploadResponseDto;
 import com.mdt.backend.exception.FileGetException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,7 +42,7 @@ public class S3Service {
   }
 
 
-  public String generatePresignedUrl(String filePath) {
+  public String generatePresignedUrl(String filePath, boolean forDownload) {
     if (filePath == null || filePath.isEmpty()) {
       throw new FileGetException("File path cannot be null or empty");
     }
@@ -62,6 +64,14 @@ public class S3Service {
           bucketName, filePath)
           .withMethod(HttpMethod.GET)
           .withExpiration(getPresignedUrlExpiration());
+
+      //다운로드 요청일 때는 Content-Disposition 헤더 추가
+      if (forDownload) {
+        // 한글 파일명 처리할 수 있도록 파일명을 UTF-8로 인코딩
+        String encodedFileName = URLEncoder.encode(filePath, StandardCharsets.UTF_8.toString()).replaceAll("\\+", "%20");
+        generatePresignedUrlRequest.addRequestParameter("response-content-disposition",
+                "attachment; filename=\"" + encodedFileName + "\"");
+      }
 
       return amazonS3.generatePresignedUrl(generatePresignedUrlRequest).toString();
     } catch (AmazonS3Exception e) {
