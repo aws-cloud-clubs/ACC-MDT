@@ -6,5 +6,5 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class FileSearchRequestDto {
-    private String filePath;
+    private String fileName;
 }
