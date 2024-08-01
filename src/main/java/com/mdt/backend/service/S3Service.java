@@ -7,7 +7,9 @@ import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.mdt.backend.dto.FileUploadResponseDto;
-import com.mdt.backend.exception.FileDownloadException;
+import com.mdt.backend.exception.FileException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,19 +42,19 @@ public class S3Service {
   }
 
 
-  public String generatePresignedUrl(String filePath) {
+  public String generatePresignedUrl(String filePath, boolean forDownload) {
     if (filePath == null || filePath.isEmpty()) {
-      throw new FileDownloadException("File path cannot be null or empty");
+      throw new FileException("File path cannot be null or empty");
     }
 
     if (bucketName == null || bucketName.isEmpty()) {
-      throw new FileDownloadException("Bucket name cannot be null or empty");
+      throw new FileException("Bucket name cannot be null or empty");
     }
 
     try {
       // 버킷이 존재하는지 확인
       if (!amazonS3.doesBucketExistV2(bucketName)) {
-        throw new FileDownloadException(bucketName + "버킷이 존재하지 않습니다.");
+        throw new FileException(bucketName + "버킷이 존재하지 않습니다.");
       }
 
       // 파일 존재하는지 확인
@@ -63,14 +65,26 @@ public class S3Service {
           .withMethod(HttpMethod.GET)
           .withExpiration(getPresignedUrlExpiration());
 
+      //다운로드 요청일 때는 Content-Disposition 헤더 추가
+      if (forDownload) {
+        // 한글 파일명 처리할 수 있도록 파일명을 UTF-8로 인코딩
+        String encodedFileName = URLEncoder.encode(filePath, StandardCharsets.UTF_8.toString()).replaceAll("\\+", "%20");
+        generatePresignedUrlRequest.addRequestParameter("response-content-disposition",
+                "attachment; filename=\"" + encodedFileName + "\"");
+      }
+
+      // 파일이 UTF-8로 인코딩된 텍스트 파일임을 명시
+      generatePresignedUrlRequest.addRequestParameter("response-content-type", "text/plain; charset=UTF-8");
+
+
       return amazonS3.generatePresignedUrl(generatePresignedUrlRequest).toString();
     } catch (AmazonS3Exception e) {
       if (e.getStatusCode() == 404) {
-        throw new FileDownloadException(filePath + "파일이 존재하지 않습니다.");
+        throw new FileException(filePath + "파일이 존재하지 않습니다.");
       }
-      throw new FileDownloadException("presignedUrl 생성 실패" + e.getMessage());
+      throw new FileException("presignedUrl 생성 실패" + e.getMessage());
     } catch (Exception e) {
-      throw new FileDownloadException("presignedUrl 생성 실패 " + e.getMessage());
+      throw new FileException("presignedUrl 생성 실패 " + e.getMessage());
     }
   }
 

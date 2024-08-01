@@ -5,8 +5,10 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class FileDownloadResponseDto {
+public class FileResponseDto {
+
     private String message;
-    private String downloadUrl;
+    private String getUrl;
+
 
 }
