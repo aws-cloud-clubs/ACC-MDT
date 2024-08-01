@@ -7,7 +7,7 @@ import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.mdt.backend.dto.FileUploadResponseDto;
-import com.mdt.backend.exception.FileGetException;
+import com.mdt.backend.exception.FileException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
@@ -44,17 +44,17 @@ public class S3Service {
 
   public String generatePresignedUrl(String filePath, boolean forDownload) {
     if (filePath == null || filePath.isEmpty()) {
-      throw new FileGetException("File path cannot be null or empty");
+      throw new FileException("File path cannot be null or empty");
     }
 
     if (bucketName == null || bucketName.isEmpty()) {
-      throw new FileGetException("Bucket name cannot be null or empty");
+      throw new FileException("Bucket name cannot be null or empty");
     }
 
     try {
       // 버킷이 존재하는지 확인
       if (!amazonS3.doesBucketExistV2(bucketName)) {
-        throw new FileGetException(bucketName + "버킷이 존재하지 않습니다.");
+        throw new FileException(bucketName + "버킷이 존재하지 않습니다.");
       }
 
       // 파일 존재하는지 확인
@@ -80,11 +80,11 @@ public class S3Service {
       return amazonS3.generatePresignedUrl(generatePresignedUrlRequest).toString();
     } catch (AmazonS3Exception e) {
       if (e.getStatusCode() == 404) {
-        throw new FileGetException(filePath + "파일이 존재하지 않습니다.");
+        throw new FileException(filePath + "파일이 존재하지 않습니다.");
       }
-      throw new FileGetException("presignedUrl 생성 실패" + e.getMessage());
+      throw new FileException("presignedUrl 생성 실패" + e.getMessage());
     } catch (Exception e) {
-      throw new FileGetException("presignedUrl 생성 실패 " + e.getMessage());
+      throw new FileException("presignedUrl 생성 실패 " + e.getMessage());
     }
   }
 

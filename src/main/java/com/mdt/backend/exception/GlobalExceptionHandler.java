@@ -13,7 +13,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(500).body("파일 검색 중 오류가 발생하였습니다!");
     }
 
-    @ExceptionHandler(FileGetException.class)
+    @ExceptionHandler(FileException.class)
     public ResponseEntity<String> handleFileDownloadException() {
         return ResponseEntity.status(500).body("파일 조회 중 오류가 발생하였습니다!");
     }

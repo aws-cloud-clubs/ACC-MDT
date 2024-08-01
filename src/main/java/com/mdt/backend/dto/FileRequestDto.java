@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class FileGetRequestDto {
+public class FileRequestDto {
     private String filePath;
 
 }

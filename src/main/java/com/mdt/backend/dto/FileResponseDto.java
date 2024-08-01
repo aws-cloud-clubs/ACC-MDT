@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class FileGetResponseDto {
+public class FileResponseDto {
 
     private String message;
     private String getUrl;
