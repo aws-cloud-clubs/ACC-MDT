@@ -2,6 +2,7 @@ package com.mdt.backend.domain;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBIndexRangeKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import lombok.AllArgsConstructor;
@@ -18,11 +19,11 @@ import lombok.Setter;
 @Builder
 public class FileInfo {
 
-    @DynamoDBHashKey(attributeName = "file_name")
-    private String fileName;
-
-    @DynamoDBRangeKey(attributeName = "user_id")
+    @DynamoDBHashKey(attributeName = "user_id")
     private String userId;
+
+    @DynamoDBRangeKey(attributeName = "file_name")
+    private String fileName;
 
     @DynamoDBAttribute(attributeName = "file_size")
     private int fileSize;
@@ -34,6 +35,7 @@ public class FileInfo {
     private int fileContentLength;
 
     @DynamoDBAttribute(attributeName = "created_at")
+    @DynamoDBIndexRangeKey(localSecondaryIndexName = "created_at-index")
     private String createdAt;
 
 }
