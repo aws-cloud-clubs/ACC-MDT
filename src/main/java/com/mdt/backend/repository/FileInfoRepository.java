@@ -5,17 +5,10 @@ import java.util.List;
 
 public interface FileInfoRepository {
 
-
     void save(FileInfo fileInfo);
 
-    List<FileInfo> findByScanFilePath(String fileName);
+    List<FileInfo> findByQueryFilePath(String userName, String fileName);
 
-
-    List<FileInfo> findByQueryFilePath(String fileName);
-
-
-    void deleteByFilePath(String filePath);
-
-    List<FileInfo> findAll();
+    List<FileInfo> findAll(String userName);
 
 }

@@ -15,16 +15,23 @@ public class AwsDynamoDbService implements DbService {
 
     private final FileInfoRepository fileInfoRepository;
 
+
+
+    // 테스트를 위해 한 번 12000개의 임시 데이터를 넣었습니다.
+    //  1번 케이스 -> 유저 이름 파일 이름 둘 다 다른 경우
+    // 2번 케이스 -> 유저 이름 다르지만 파일 이름이 동일한 경우
+
+
     @Override
     public List<String> searchFiles(FileSearchRequestDto dto) {
-        if (isRequestFilePathEmpty(dto))
-            return fileInfoRepository.findAll().stream().map(fileInfo  -> fileInfo.getUserId() + "/" + fileInfo.getFileName()).toList();
+        if (isRequestFileNameEmpty(dto))
+            return fileInfoRepository.findAll(dto.getUserId()).stream().map(fileInfo  -> fileInfo.getUserId() + "/" +  fileInfo.getFileName()).toList();
 
-        return fileInfoRepository.findByQueryFilePath(dto.getFileName()).stream()
+        return fileInfoRepository.findByQueryFilePath(dto.getUserId(), dto.getFileName()).stream()
             .map(fileInfo -> fileInfo.getUserId() + "/" + fileInfo.getFileName()).toList();
     }
 
-    private boolean isRequestFilePathEmpty(FileSearchRequestDto dto) {
+    private boolean isRequestFileNameEmpty(FileSearchRequestDto dto) {
         String fileName = dto.getFileName();
         return (Objects.isNull(fileName) || fileName.isEmpty());
     }

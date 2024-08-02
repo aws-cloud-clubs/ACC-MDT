@@ -26,33 +26,15 @@ public class DynamoDbFileInfoRepository implements FileInfoRepository {
         dynamoDBMapper.save(fileInfo);
     }
 
-    @Override
-    public List<FileInfo> findByScanFilePath(String fileName) {
-        try {
-            DynamoDBMapper mapper = new DynamoDBMapper(client);
 
-            DynamoDBScanExpression expression = DynamoDbExpressionProvider.
-                provideFilterScanExpression(
-                ":file_name", fileName,
-                "file_name = :file_name");
-
-            PaginatedScanList<FileInfo> scan = mapper.scan(FileInfo.class,
-                expression);
-
-            return scan.stream().toList();
-        } catch (RuntimeException e) {
-            log.error("error : {}", e.getMessage());
-            throw new FileSearchException();
-        }
-    }
 
     @Override
-    public List<FileInfo> findByQueryFilePath(String fileName) {
+    public List<FileInfo> findByQueryFilePath(String userId, String fileName) {
         try {
             DynamoDBMapper mapper = new DynamoDBMapper(client);
 
             DynamoDBQueryExpression<FileInfo> expr = DynamoDbExpressionProvider.
-                provideQueryExpression(fileName);
+                provideQueryExpression(userId,fileName);
 
             PaginatedQueryList<FileInfo> query = mapper.query(FileInfo.class, expr);
 
@@ -63,18 +45,14 @@ public class DynamoDbFileInfoRepository implements FileInfoRepository {
         }
     }
 
-    @Override
-    public void deleteByFilePath(String filePath) {
-
-    }
 
     @Override
-    public List<FileInfo> findAll() {
+    public List<FileInfo> findAll(String userId) {
         try {
             DynamoDBMapper mapper = new DynamoDBMapper(client);
-            PaginatedScanList<FileInfo> scan = mapper.scan(FileInfo.class,
-                DynamoDbExpressionProvider.provideEmptyScanExpression());
-            return scan.stream().toList();
+            PaginatedQueryList<FileInfo> query = mapper.query(FileInfo.class,
+                DynamoDbExpressionProvider.provideEmptyQueryExpression(userId));
+            return query.stream().toList();
         } catch (RuntimeException e) {
             log.error("error : {}", e.getMessage());
             throw new FileSearchException();
