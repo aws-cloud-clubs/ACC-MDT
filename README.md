@@ -158,7 +158,6 @@ VPC Gateway Endpoint를 사용해 Session Manager, DynamoDB, S3를 연결했습�
 
 ## 백엔드 컨벤션
 ### **🗂️ Commit Convention**
-<img width="825" alt="image" src="https://github.com/user-attachments/assets/5fc0ab1f-9eb1-4a1e-a253-bc232b6b9be0">
 
 - 형식: `[태그]: 커밋내용`
 
