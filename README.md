@@ -149,7 +149,7 @@ VPC Gateway Endpoint를 사용해 Session Manager, DynamoDB, S3를 연결했습�
 
 |다운로드|업로드|
 | :-------| :-------|
-|1000명이 1초 동안 요청|1000명이 10초 동안 요청|
+|1000명이 10초 동안 요청|1000명이 10초 동안 요청|
 |<img width="751" alt="image" src="https://github.com/user-attachments/assets/3f40e708-bdc6-4a89-815e-eb64f2b67fd1">|<img width="745" alt="image" src="https://github.com/user-attachments/assets/20a77ce6-3743-48de-bc4a-caa18494ec72">|
 |- 10초 동안 1000명의 사용자가 요청을 보냄. 총 8685개의 요청이 다 처리됨 <br> - 8685개의 요청 중 16개의 요청만 1초가 넘음 <br> - 평균 요청 처리 시간 : 153.8ms|- 10초 동안 1000명의 사용자가 요청을 보냄. 총 8631개의 요청이 다 처리됨 <br> - 8631개의 요청이 모두 1초 이내에 처리됨 <br> - 평균 요청 처리 시간 : 22.28ms|
 
